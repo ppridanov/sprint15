@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const { errors } = require('celebrate');
+const { requestLogger, errorLogger } = require('./middlewars/logger');
 
 require('dotenv').config();
 
@@ -24,8 +25,13 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
     process.exit(1);
   });
 app.use(cookieParser());
+
+app.use(requestLogger);
+
 app.use('/', require('./routes/users'));
 app.use('/', require('./routes/cards'));
+
+app.use(errorLogger);
 
 app.use(errors());
 

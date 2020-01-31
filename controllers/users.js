@@ -17,10 +17,21 @@ module.exports.createUser = (req, res, next) => {
         password: hash,
         about: req.body.about,
         avatar: req.body.avatar,
+      }, (err, user) => {
+        try {
+          if (err != undefined || user == undefined) {
+            if (err.code === 11000) {
+              next(new SomethingWrongError('Такой почтовый ящик уже существует'));
+              return;
+            }
+            next(new SomethingWrongError('Проверьте правильность введенных данных'));
+          }
+          res.send({ data: user, message: 'Пользователь успешно создан' });
+        } catch (err) {
+          next(err);
+        }
       });
-    })
-    .then((user) => res.status(201).send({ data: user }, { message: 'Пользователь создан' }))
-    .catch(next);
+    });
 };
 
 // Вход пользователя
