@@ -4,6 +4,8 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const SomethingWrongError = require('../errors/something-wrong-error');
 const NotFoundError = require('../errors/not-found-error');
+const NotHaveAccess = require('../errors/not-have-access');
+const IntenalServerError = require('../errors/internal-server-error');
 
 // Создание пользователя
 module.exports.createUser = (req, res, next) => {
@@ -75,35 +77,45 @@ module.exports.getUser = (req, res, next) => {
 };
 
 // Получить информацию пользователя
-module.exports.updateUserInfo = (req, res) => {
+module.exports.updateUserInfo = (req, res, next) => {
   const userId = req.user._id;
   const { name, about } = req.body;
   User.findById(userId)
     .then((user) => {
       if (user.id.toString() === userId) {
         User.findByIdAndUpdate(userId, { name, about }, { new: true, runValidators: true })
-          .then((user) => res.send({ data: user }))
-          .catch(() => errorServerSide(res));
+          .then((user) => {
+            if (!user) {
+              throw new IntenalServerError();
+            }
+            res.send({ data: user });
+          })
+          .catch(next);
       } else {
-        return Promise.reject(new Error('У вас нет доступа к изменению чужих аккаунтов'));
+        throw new NotHaveAccess('У вас нет доступа к изменению чужого профиля');
       }
     })
-    .catch(() => errorServerSide(res));
+    .catch(next);
 };
 
 // Обновить аватар пользователя
-module.exports.updateUserAvatar = (req, res) => {
+module.exports.updateUserAvatar = (req, res, next) => {
   const userId = req.user._id;
   const { avatar } = req.body;
   User.findById(userId)
     .then((user) => {
       if (user.id.toSting() === userId) {
         User.findByIdAndUpdate(userId, { avatar }, { new: true, runValidators: true })
-          .then((user) => res.send({ data: user }))
-          .catch(() => errorServerSide(res));
+          .then((user) => {
+            if (!user) {
+              throw new IntenalServerError();
+            }
+            res.send({ data: user });
+          })
+          .catch(next);
       } else {
-        return Promise.reject(new Error('У вас нет доступа к изменению чужих аккаунтов'));
+        throw new NotHaveAccess('У вас нет доступа к изменению чужого профиля');
       }
     })
-    .catch(() => errorServerSide(res));
+    .catch(next);
 };
