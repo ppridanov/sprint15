@@ -52,6 +52,17 @@ module.exports.getAllCards = (req, res, next) => {
     .catch(next);
 };
 
+// Получить одну карточку
+module.exports.getCard = (req, res, next) => {
+  const { cardId } = req.params;
+  Card.findById(cardId, (err, card) => {
+    if (err != undefined || card == undefined) {
+      next(new NotFoundError('Не найдена карточка'));
+    }
+    res.send(card);
+  });
+};
+
 // Поставить лайк карточке
 module.exports.likeCard = (req, res, next) => {
   const { cardId } = req.params;
