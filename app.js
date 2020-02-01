@@ -4,7 +4,8 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const { errors } = require('celebrate');
 const { requestLogger, errorLogger } = require('./middlewars/logger');
-
+const { newUserValidator, loginValidator } = require('./middlewars/validator');
+const { createUser, login } = require('./controllers/users');
 require('dotenv').config();
 
 
@@ -29,14 +30,15 @@ app.use(cookieParser());
 
 app.use(requestLogger);
 
-app.use('/', require('./routes/users'));
-
+app.post('/signup', newUserValidator, createUser);
 app.get('/crash-test', () => {
   setTimeout(() => {
     throw new Error('Сервер сейчас упадёт');
   }, 0);
 });
+app.post('/signin', loginValidator, login);
 
+app.use('/', require('./routes/users'));
 app.use('/', require('./routes/cards'));
 
 app.use(errorLogger);
@@ -55,5 +57,8 @@ app.use((err, req, res, next) => {
     });
 });
 
+app.use('*', (req, res) => {
+  res.status(404).send({ message: 'Запрашивая страница не найдена' });
+});
 
 app.listen(PORT);
