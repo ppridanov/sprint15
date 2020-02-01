@@ -117,7 +117,7 @@ module.exports.updateUserAvatar = (req, res, next) => {
   const { avatar } = req.body;
   User.findById(userId)
     .then((user) => {
-      if (user.id.toSting() === userId) {
+      if (user.id.toString() === userId) {
         User.findByIdAndUpdate(userId, { avatar }, { new: true, runValidators: true })
           .then((user) => {
             if (!user) {
