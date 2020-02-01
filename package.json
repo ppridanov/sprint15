@@ -1,6 +1,6 @@
 {
-  "name": "sprint14",
-  "version": "0.0.1",
+  "name": "sprint15",
+  "version": "1.0.0",
   "description": "This is my project for backend technology. It's REST API",
   "main": "index.js",
   "scripts": {
@@ -34,10 +34,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ppridanov/sprint14.git"
+    "url": "git+https://github.com/ppridanov/sprint15.git"
   },
   "bugs": {
-    "url": "https://github.com/ppridanov/sprint14/issues"
+    "url": "https://github.com/ppridanov/sprint15/issues"
   },
-  "homepage": "https://github.com/ppridanov/sprint14#readme"
+  "homepage": "https://github.com/ppridanov/sprint15#readme"
 }
