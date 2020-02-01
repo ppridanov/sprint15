@@ -8,7 +8,6 @@ const { newUserValidator, loginValidator } = require('./middlewars/validator');
 const { createUser, login } = require('./controllers/users');
 require('dotenv').config();
 
-
 const { PORT = 3000 } = process.env;
 const app = express();
 app.use(bodyParser.json());
