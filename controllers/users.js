@@ -29,7 +29,7 @@ module.exports.createUser = (req, res, next) => {
             }
             next(new SomethingWrongError('Проверьте правильность введенных данных'));
           }
-          res.send({ data: user, message: 'Пользователь успешно создан' });
+          res.send({ message: 'Пользователь успешно создан' });
         } catch (err) {
           next(err);
         }
