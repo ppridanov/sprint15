@@ -1,9 +1,9 @@
 const jwt = require('jsonwebtoken');
 const NotHaveAccess = require('../errors/not-have-access');
 
+const { NODE_ENV, JWT_SECRET } = process.env;
 module.exports = (req, res, next) => {
   const cookie = req.cookies.jwt;
-  const JWT_SECRET = 'f86fa1ca3730b0a770c44debf1cea55ae915f2bd9809cb5ae1239a1f6fc80314';
   if (!cookie) {
     throw new NotHaveAccess('Доступ запрещен. Необходима авторизация');
   }
@@ -11,7 +11,8 @@ module.exports = (req, res, next) => {
   let payload;
 
   try {
-    payload = jwt.verify(cookie, JWT_SECRET);
+    payload = jwt.verify(cookie, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret');
+
     req.user = payload;
   } catch (err) {
     throw new NotHaveAccess('Доступ запрещен. Необходима авторизация');

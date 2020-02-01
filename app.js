@@ -7,6 +7,7 @@ const { requestLogger, errorLogger } = require('./middlewars/logger');
 
 require('dotenv').config();
 
+
 const { PORT = 3000 } = process.env;
 const app = express();
 app.use(bodyParser.json());
@@ -29,6 +30,13 @@ app.use(cookieParser());
 app.use(requestLogger);
 
 app.use('/', require('./routes/users'));
+
+app.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('Сервер сейчас упадёт');
+  }, 0);
+});
+
 app.use('/', require('./routes/cards'));
 
 app.use(errorLogger);

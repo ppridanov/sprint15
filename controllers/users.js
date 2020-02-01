@@ -2,6 +2,8 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
+
+const { NODE_ENV, JWT_SECRET } = process.env;
 const SomethingWrongError = require('../errors/something-wrong-error');
 const NotFoundError = require('../errors/not-found-error');
 const NotHaveAccess = require('../errors/not-have-access');
@@ -50,8 +52,7 @@ module.exports.login = (req, res, next) => {
       if (!matched) {
         throw new SomethingWrongError('Проверьте правильность ввода учетных данных');
       }
-      const JWT_SECRET = 'f86fa1ca3730b0a770c44debf1cea55ae915f2bd9809cb5ae1239a1f6fc80314';
-      const token = jwt.sign({ _id: userId }, JWT_SECRET, { expiresIn: '7d' });
+      const token = jwt.sign({ _id: userId }, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret', { expiresIn: '7d' });
       res
         .status(200)
         .cookie('jwt', token, {
