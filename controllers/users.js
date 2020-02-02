@@ -76,7 +76,7 @@ module.exports.getAllUsers = (req, res, next) => {
 
 // Получить своего пользователя
 module.exports.getUser = (req, res, next) => {
-  const { userId } = req.params;
+  const userId = req.user._id;
   User.findById(userId, (err, user) => {
     try {
       if (err != undefined || user == undefined) {
