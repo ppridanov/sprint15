@@ -33,7 +33,7 @@ module.exports.deleteCard = (req, res, next) => {
           if (!card) {
             throw new NotFoundError('Не найден идентификатор с таким ID');
           }
-          res.send({ data: card });
+          res.send(card);
         })
         .catch(next);
     })
@@ -47,7 +47,7 @@ module.exports.getAllCards = (req, res, next) => {
       if (!card) {
         throw new InternalServerError();
       }
-      res.send({ data: card });
+      res.send(card);
     })
     .catch(next);
 };
@@ -67,11 +67,11 @@ module.exports.getCard = (req, res, next) => {
 module.exports.likeCard = (req, res, next) => {
   const { cardId } = req.params;
   Card.findByIdAndUpdate(cardId, { $addToSet: { likes: req.user._id } }, { new: true })
-    .then((like) => {
-      if (!like) {
+    .then((card) => {
+      if (!card) {
         throw new InternalServerError();
       }
-      res.send({ data: like });
+      res.send(card);
     })
     .catch(next);
 };
@@ -80,11 +80,11 @@ module.exports.likeCard = (req, res, next) => {
 module.exports.dislikeCard = (req, res, next) => {
   const { cardId } = req.params;
   Card.findByIdAndUpdate(cardId, { $pull: { likes: req.user._id } }, { new: true })
-    .then((like) => {
-      if (!like) {
+    .then((card) => {
+      if (!card) {
         throw new InternalServerError();
       }
-      res.send({ data: like });
+      res.send(card);
     })
     .catch(next);
 };

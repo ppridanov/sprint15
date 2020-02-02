@@ -70,7 +70,7 @@ module.exports.login = (req, res, next) => {
 // Получить всех пользователей
 module.exports.getAllUsers = (req, res, next) => {
   User.find({})
-    .then((users) => res.send({ data: users }))
+    .then((users) => res.send(users))
     .catch(next);
 };
 
@@ -101,7 +101,7 @@ module.exports.updateUserInfo = (req, res, next) => {
             if (!user) {
               throw new IntenalServerError();
             }
-            res.send({ data: user });
+            res.send(user);
           })
           .catch(next);
       } else {
@@ -123,7 +123,7 @@ module.exports.updateUserAvatar = (req, res, next) => {
             if (!user) {
               throw new IntenalServerError();
             }
-            res.send({ data: user });
+            res.send(user);
           })
           .catch(next);
       } else {
