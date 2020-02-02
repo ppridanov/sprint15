@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const auth = require('../middlewars/auth');
+const { cardCreateValidator } = require('../middlewars/validator');
 
 const {
   createCard,
@@ -10,7 +11,7 @@ const {
   getCard,
 } = require('../controllers/cards');
 
-router.post('/cards', auth, createCard);
+router.post('/cards', auth, cardCreateValidator, createCard);
 router.delete('/cards/:cardId', auth, deleteCard);
 router.get('/cards/:cardId', auth, getCard);
 router.get('/cards/', auth, getAllCards);

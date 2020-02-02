@@ -61,3 +61,17 @@ module.exports.loginValidator = celebrate({
       .pattern(/^[a-zA-Z0-9]{3,30}$/),
   }),
 });
+
+module.exports.cardCreateValidator = celebrate({
+  body: Joi.object().keys({
+    name: Joi.string()
+      .required()
+      .min(2)
+      .max(30)
+      .label('Проверьте правильность введенного имени'),
+    link: Joi.string()
+      .required()
+      .pattern(/^https?:\/\//)
+      .label('Проверьте правильность введеного URL'),
+  }),
+});
