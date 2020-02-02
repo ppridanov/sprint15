@@ -30,11 +30,6 @@ app.use(cookieParser());
 app.use(requestLogger);
 
 app.post('/signup', newUserValidator, createUser);
-app.get('/crash-test', () => {
-  setTimeout(() => {
-    throw new Error('Сервер сейчас упадёт');
-  }, 0);
-});
 app.post('/signin', loginValidator, login);
 
 app.use('/', require('./routes/users'));
